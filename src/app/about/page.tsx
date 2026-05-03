@@ -1,12 +1,58 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe, HelpCircle, Crown, Lock } from "lucide-react";
+import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe, HelpCircle, Crown, Lock, Cpu, Server, Network } from "lucide-react";
 import { HudCard } from "@/components/ui/hud-card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
+/* Premium Noise Texture Overlay */
+const GlobalStyles = () => (
+  <style jsx global>{`
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Advanced Scanline Button Effect */
+    .animate-shimmer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      z-index: 5;
+      animation: scanline 3s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(500%); }
+    }
+  `}</style>
+);
 
 export default function AboutPage() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -52,7 +98,17 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-foreground font-sans overflow-x-hidden selection:bg-primary selection:text-background">
+    <div className="min-h-screen bg-[#050505] text-foreground font-sans overflow-x-hidden selection:bg-primary selection:text-background relative">
+      <GlobalStyles />
+      {/* Dynamic Cursor Glow */}
+      <div 
+        className="fixed pointer-events-none z-0 size-[800px] rounded-full opacity-[0.07] blur-[120px] bg-primary transition-all duration-300 ease-out"
+        style={{ 
+          left: mousePos.x - 400, 
+          top: mousePos.y - 400,
+        }}
+      />
+
       {/* Background Grid & Glows */}
       <div className="fixed inset-0 z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[150px] animate-pulse" />
@@ -235,6 +291,62 @@ export default function AboutPage() {
                  Read Our Whitepaper <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform" />
               </button>
            </div>
+        </section>
+
+        {/* Live Network Status Module (Advanced) */}
+        <section className="space-y-12">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4"
+          >
+             <div className="h-[2px] w-12 bg-primary" />
+             <h2 className="text-[12px] font-black uppercase tracking-[0.6em] opacity-40">Live Network Protocol</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-white/5 border border-white/10 p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <Cpu size={20} className="text-primary/40" />
+                <span className="text-[10px] font-black text-primary animate-pulse">OPTIMIZED</span>
+              </div>
+              <div className="space-y-2">
+                <div className="text-[24px] font-black tracking-tighter">0.82ms</div>
+                <div className="text-[9px] font-black uppercase tracking-widest opacity-40">Processing Latency</div>
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <Server size={20} className="text-primary/40" />
+                <span className="text-[10px] font-black text-primary">STABLE</span>
+              </div>
+              <div className="space-y-2">
+                <div className="text-[24px] font-black tracking-tighter">14 Nodes</div>
+                <div className="text-[9px] font-black uppercase tracking-widest opacity-40">Active Compute Clusters</div>
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <Network size={20} className="text-primary/40" />
+                <span className="text-[10px] font-black text-primary">ENCRYPTED</span>
+              </div>
+              <div className="space-y-2">
+                <div className="text-[24px] font-black tracking-tighter">AES-256</div>
+                <div className="text-[9px] font-black uppercase tracking-widest opacity-40">Quantum Safe Layer</div>
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <Globe size={20} className="text-primary/40" />
+                <span className="text-[10px] font-black text-primary">GLOBAL</span>
+              </div>
+              <div className="space-y-2">
+                <div className="text-[24px] font-black tracking-tighter">6 Regions</div>
+                <div className="text-[9px] font-black uppercase tracking-widest opacity-40">Deployment Footprint</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Call to Action */}
