@@ -102,7 +102,7 @@ export default async function TradesPage() {
               className="bg-primary/5 border border-primary py-5 pl-16 pr-6 text-[14px] font-black w-full transition-all outline-none focus:bg-primary/10 placeholder:text-primary/20"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Filter Selection HUD */}
         <div className="flex gap-2 p-2 bg-primary/5 border border-primary w-fit">
