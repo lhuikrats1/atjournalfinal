@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import prisma from "@/lib/prisma";
 import { Lightbulb, Activity, Brain, Shield, Moon } from "lucide-react";
 import { generateCoachingTips, computeCoreStats, computeDirectionalStats, type RawTrade } from "@/lib/analytics";

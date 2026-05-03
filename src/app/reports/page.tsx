@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { FileText, Download, Clock, Shield, Archive } from "lucide-react";
 
 export default function ReportsPage() {
