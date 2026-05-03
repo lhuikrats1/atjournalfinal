@@ -7,8 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -41,7 +41,7 @@ model Trade {
   grossPnl     Decimal
   commission   Decimal
   netPnl       Decimal
-  tags         String   @default("[]") // JSON stringified array for SQLite compatibility
+  tags         Json     @default("[]") 
   notes        String?
   screenshotUrl String?
   session      String   // ENUM: PREMARKET, REGULAR, AFTERHOURS, OVERNIGHT
