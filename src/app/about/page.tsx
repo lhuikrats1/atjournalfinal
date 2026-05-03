@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe } from "lucide-react";
+import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe, HelpCircle, Crown } from "lucide-react";
 import { HudCard } from "@/components/ui/hud-card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -133,6 +133,40 @@ export default function AboutPage() {
                 </HudCard>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* Random Facts Section */}
+        <section className="space-y-12">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4"
+          >
+             <div className="h-[2px] w-12 bg-primary" />
+             <h2 className="text-[12px] font-black uppercase tracking-[0.6em] opacity-40">System Intel // Did You Know?</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+              <HelpCircle className="text-primary/40" size={20} />
+              <p className="text-[11px] font-medium leading-relaxed opacity-60 uppercase tracking-wider">
+                90% of retail traders fail within their first year due to "Emotional Drift". AtJournal uses AI to detect drift before it hits your balance.
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+              <Crown className="text-primary/40" size={20} />
+              <p className="text-[11px] font-medium leading-relaxed opacity-60 uppercase tracking-wider">
+                The term "Lunar Brutalist" refers to our design philosophy: raw utility meets cosmic precision. No rounded corners, no wasted space.
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+               <Zap className="text-primary/40" size={20} />
+               <p className="text-[11px] font-medium leading-relaxed opacity-60 uppercase tracking-wider">
+                Our Tradovate sync protocol is optimized for sub-100ms latency, ensuring your journal reflects your reality instantly.
+               </p>
+            </motion.div>
           </div>
         </section>
 
