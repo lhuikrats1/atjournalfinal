@@ -16,7 +16,8 @@ import {
   Box,
   Settings,
   Sparkles,
-  CreditCard
+  CreditCard,
+  Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -32,6 +33,7 @@ const routes = [
   { label: "System Reports", icon: FileText, href: "/reports" },
   { label: "Settings", icon: Settings, href: "/settings" },
   { label: "Billing", icon: CreditCard, href: "/billing" },
+  { label: "Manifesto", icon: Info, href: "/about" },
 ];
 
 export function Sidebar() {
