@@ -5,8 +5,23 @@ import { HudCard } from "@/components/ui/hud-card";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Lock, Mail, ChevronRight, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
+import { 
+  Lock, 
+  Mail, 
+  ChevronRight, 
+  Sparkles, 
+  CreditCard,
+  Info,
+  Calendar,
+  Dice5,
+  LayoutDashboard,
+  History,
+  BarChart3,
+  Lightbulb,
+  FileText,
+  Settings
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,6 +39,19 @@ const itemVariants = {
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
   }
 };
+
+const navItems = [
+  { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { label: "Trade Journal", icon: History, href: "/trades" },
+  { label: "Calendar", icon: Calendar, href: "/calendar" },
+  { label: "Analytics", icon: BarChart3, href: "/analytics" },
+  { label: "Simulation", icon: Dice5, href: "/analytics/monte-carlo" },
+  { label: "Edge Vault", icon: Lightbulb, href: "/coaching" },
+  { label: "System Reports", icon: FileText, href: "/reports" },
+  { label: "Settings", icon: Settings, href: "/settings" },
+  { label: "Billing", icon: CreditCard, href: "/billing" },
+  { label: "Manifesto", icon: Info, href: "/about" },
+];
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -92,10 +120,47 @@ export default function LoginPage() {
 
         <motion.div variants={itemVariants}>
           <HudCard className={cn(
-            "p-10 transition-all duration-700 border-primary/20 bg-black/40 backdrop-blur-xl",
+            "p-10 transition-all duration-700 border-primary/20 bg-black/40 backdrop-blur-xl relative overflow-hidden",
             status === "DENIED" && "border-destructive/50 shadow-[0_0_50px_rgba(255,51,51,0.05)]",
             status === "GRANTED" && "border-primary/50 shadow-[0_0_50px_rgba(255,255,255,0.05)]"
           )}>
+            {/* Epic Welcome Splash Overlay */}
+            <AnimatePresence>
+              {status === "GRANTED" && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-[100] bg-primary flex flex-col items-center justify-center text-background p-12 space-y-8"
+                >
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", damping: 15 }}
+                    className="flex flex-col items-center gap-6"
+                  >
+                     <div className="size-20 border-4 border-background flex items-center justify-center">
+                        <Sparkles size={40} className="animate-pulse" />
+                     </div>
+                     <div className="text-center space-y-2">
+                        <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">WELCOME<br/>BACK</h2>
+                        <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-60 italic">Handshake_Verified</span>
+                     </div>
+                  </motion.div>
+                  
+                  <div className="w-full max-w-[200px] h-1 bg-background/20 relative overflow-hidden">
+                    <motion.div 
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "0%" }}
+                      transition={{ duration: 1.2, ease: "easeInOut" }}
+                      className="absolute inset-0 bg-background"
+                    />
+                  </div>
+                  <span className="text-[9px] font-black uppercase tracking-[0.4em] animate-pulse">Syncing Vault...</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           <form onSubmit={handleLogin} className="space-y-8">
             <div className="space-y-5">
               <div className="space-y-2">

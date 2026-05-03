@@ -17,7 +17,9 @@ import {
   Settings,
   Sparkles,
   CreditCard,
-  Info
+  Info,
+  Calendar,
+  Dice5
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -28,7 +30,9 @@ import { createClient } from "@/lib/supabase/client";
 const routes = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Trade Journal", icon: History, href: "/trades" },
+  { label: "Calendar", icon: Calendar, href: "/calendar" },
   { label: "Analytics", icon: BarChart3, href: "/analytics" },
+  { label: "Simulation", icon: Dice5, href: "/analytics/monte-carlo" },
   { label: "Edge Vault", icon: Lightbulb, href: "/coaching" },
   { label: "System Reports", icon: FileText, href: "/reports" },
   { label: "Settings", icon: Settings, href: "/settings" },
