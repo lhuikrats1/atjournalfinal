@@ -154,7 +154,8 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-        </motion.div>
+        </HudCard>
+      </motion.div>
 
         <motion.div variants={itemVariants} className="text-center pt-8 border-t border-primary/10 flex flex-col items-center gap-4">
            <button 
