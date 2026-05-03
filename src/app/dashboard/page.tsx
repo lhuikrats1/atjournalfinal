@@ -56,7 +56,6 @@ export default async function DashboardPage() {
   const dailyPnl = computeDailyPnl(trades);
 
   return (
-  return (
     <motion.div 
       initial="hidden"
       animate="visible"
@@ -146,8 +145,7 @@ export default async function DashboardPage() {
                   <div className="text-3xl font-black tabular-nums tracking-tighter font-mono text-primary">2.48</div>
                   <div className="text-[9px] font-black uppercase opacity-40">RISK_ADJ_EFF</div>
                </div>
-            </div>
-            </div>
+             </div>
           </motion.div>
 
           <motion.div variants={itemVariants} className="lg:col-span-4 space-y-8">
@@ -219,7 +217,6 @@ export default async function DashboardPage() {
                      <div>[{new Date().toLocaleTimeString()}] - READY_FOR_EXEC</div>
                   </div>
                </div>
-            </div>
             </div>
           </motion.div>
         </div>
