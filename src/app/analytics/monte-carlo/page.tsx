@@ -115,9 +115,9 @@ export default function MonteCarloPage() {
       className="min-h-full flex flex-col p-8 space-y-12 bg-transparent overflow-x-hidden"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex items-end justify-between border-b border-primary/20 pb-8">
-        <div className="space-y-2">
-          <h1 className="text-7xl font-black tracking-tighter uppercase leading-[0.8]">
+      <motion.div variants={itemVariants} className="flex items-end justify-between border-b border-primary/20 pb-8 relative z-50">
+        <div className="space-y-4">
+          <h1 className="text-7xl lg:text-8xl font-black tracking-tighter uppercase leading-[0.75]">
             Monte Carlo<br/>
             <span className="text-primary/20">Simulator</span>
           </h1>
@@ -165,6 +165,28 @@ export default function MonteCarloPage() {
                       className="w-full accent-primary h-1 bg-white/10 rounded-none appearance-none"
                     />
                  </div>
+
+                 <div className="pt-4 border-t border-white/5 space-y-4">
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black uppercase opacity-40">Initial Balance ($)</label>
+                       <input 
+                         type="number" 
+                         value={initialBalance}
+                         onChange={(e) => setInitialBalance(Number(e.target.value))}
+                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none"
+                       />
+                    </div>
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black uppercase opacity-40">Simulations Count</label>
+                       <input 
+                         type="number" 
+                         min="1" max="100"
+                         value={trials}
+                         onChange={(e) => setTrials(Number(e.target.value))}
+                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none"
+                       />
+                    </div>
+                 </div>
               </div>
 
               <div className="pt-8 border-t border-primary/10 space-y-4">
@@ -194,48 +216,50 @@ export default function MonteCarloPage() {
         </motion.div>
 
          <motion.div variants={itemVariants} className="lg:col-span-8 space-y-8">
-           <HudCard className="p-8 h-[500px] border-primary/20 relative group">
+           <HudCard className="p-8 h-[500px] border-primary/20 relative group overflow-hidden">
               <div className="absolute top-8 left-8 z-10 flex items-center gap-4">
                  <div className="size-2 bg-primary animate-pulse" />
                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Projection Matrix</span>
               </div>
               
-              {results.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={results}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                    <XAxis dataKey="trade" hide />
-                    <YAxis 
-                      domain={['auto', 'auto']}
-                      stroke="#ffffff20"
-                      tick={{ fontSize: 10, fontWeight: 900 }}
-                      tickFormatter={(val) => `$${val.toLocaleString()}`}
-                    />
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: '#000', border: '1px solid #ffffff20', fontSize: '10px', fontWeight: 900 }}
-                      itemStyle={{ color: '#fff' }}
-                      labelClassName="hidden"
-                    />
-                    {Array.from({ length: trials }).map((_, i) => (
-                      <Line 
-                        key={i}
-                        type="monotone" 
-                        dataKey={`trial_${i}`} 
-                        stroke={i % 2 === 0 ? "#ffffff" : "var(--primary)"} 
-                        strokeWidth={1} 
-                        dot={false}
-                        opacity={i % 2 === 0 ? 0.05 : 0.15}
-                        isAnimationActive={false}
+              <div className="w-full h-full pt-12">
+                {results.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={results}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                      <XAxis dataKey="trade" hide />
+                      <YAxis 
+                        domain={['auto', 'auto']}
+                        stroke="#ffffff20"
+                        tick={{ fontSize: 10, fontWeight: 900 }}
+                        tickFormatter={(val) => `$${val.toLocaleString()}`}
                       />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-20">
-                   <Target size={48} strokeWidth={1} />
-                   <p className="text-[11px] font-black uppercase tracking-[0.5em]">Awaiting Execution Parameter</p>
-                </div>
-              )}
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#000', border: '1px solid #ffffff20', fontSize: '10px', fontWeight: 900 }}
+                        itemStyle={{ color: '#fff' }}
+                        labelClassName="hidden"
+                      />
+                      {Array.from({ length: trials }).map((_, i) => (
+                        <Line 
+                          key={i}
+                          type="monotone" 
+                          dataKey={`trial_${i}`} 
+                          stroke={i % 2 === 0 ? "#ffffff" : "var(--primary)"} 
+                          strokeWidth={1} 
+                          dot={false}
+                          opacity={i % 2 === 0 ? 0.05 : 0.15}
+                          isAnimationActive={false}
+                        />
+                      ))}
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-20">
+                     <Target size={48} strokeWidth={1} />
+                     <p className="text-[11px] font-black uppercase tracking-[0.5em]">Awaiting Execution Parameter</p>
+                  </div>
+                )}
+              </div>
            </HudCard>
 
            {/* Stats Summary Grid */}
