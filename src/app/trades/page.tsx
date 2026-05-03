@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
-import { TradeTable } from "@/components/trades/trade-table";
-import { Search, Filter, Download, Plus, Database, Archive } from "lucide-react";
+import { Search, Filter, Download, Plus, Database, Archive, Upload } from "lucide-react";
+import { ImportVault } from "@/components/trades/import-vault";
 export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -75,6 +75,7 @@ export default async function TradesPage() {
             <Filter size={14} strokeWidth={3} />
             Filter Set
           </button>
+          <ImportVault />
           <button className="flex items-center gap-2 px-6 py-2 border border-primary text-[11px] font-black uppercase tracking-widest hover:bg-primary hover:text-background transition-all">
             <Download size={14} strokeWidth={3} />
             Csv Export
