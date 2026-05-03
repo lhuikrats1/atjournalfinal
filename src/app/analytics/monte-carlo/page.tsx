@@ -21,14 +21,22 @@ export default function MonteCarloPage() {
   const [initialBalance, setInitialBalance] = useState(10000);
   const [riskPerTrade, setRiskPerTrade] = useState(1);
   const [results, setResults] = useState<any[]>([]);
+  const [stats, setStats] = useState<{ median: number, ruin: number, maxDD: number } | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
   const runSimulation = () => {
     setIsSimulating(true);
     setTimeout(() => {
       const allTrials = [];
+      let ruinCount = 0;
+      let totalMaxDD = 0;
+      const finalBalances: number[] = [];
+
       for (let t = 0; t < trials; t++) {
         let balance = initialBalance;
+        let peak = initialBalance;
+        let maxDD = 0;
+        let isRuined = false;
         const trialData = [{ equity: balance, trade: 0, trial: t }];
         
         for (let i = 1; i <= tradeCount; i++) {
@@ -41,21 +49,42 @@ export default function MonteCarloPage() {
             balance -= amountAtRisk;
           }
           
+          if (balance <= 0) {
+            balance = 0;
+            isRuined = true;
+          }
+
+          if (balance > peak) peak = balance;
+          const dd = (peak - balance) / peak;
+          if (dd > maxDD) maxDD = dd;
+          
           trialData.push({ equity: Math.round(balance), trade: i, trial: t });
         }
+        
+        if (isRuined) ruinCount++;
+        totalMaxDD += maxDD;
+        finalBalances.push(balance);
         allTrials.push(trialData);
       }
 
       // Format for Recharts (Pivot)
       const formatted = [];
       for (let i = 0; i <= tradeCount; i++) {
-        const dataPoint: any = { trade: i };
+        const dataKey: any = { trade: i };
         allTrials.forEach((trial, idx) => {
-          dataPoint[`trial_${idx}`] = trial[i].equity;
+          dataKey[`trial_${idx}`] = trial[i].equity;
         });
-        formatted.push(dataPoint);
+        formatted.push(dataKey);
       }
       
+      finalBalances.sort((a, b) => a - b);
+      const median = finalBalances[Math.floor(finalBalances.length / 2)];
+      
+      setStats({
+        median,
+        ruin: (ruinCount / trials) * 100,
+        maxDD: (totalMaxDD / trials) * 100
+      });
       setResults(formatted);
       setIsSimulating(false);
     }, 800);
@@ -164,9 +193,8 @@ export default function MonteCarloPage() {
            </div>
         </motion.div>
 
-        {/* Chart View */}
-        <motion.div variants={itemVariants} className="lg:col-span-8 space-y-8">
-           <HudCard className="p-8 h-[600px] border-primary/20 relative group">
+         <motion.div variants={itemVariants} className="lg:col-span-8 space-y-8">
+           <HudCard className="p-8 h-[500px] border-primary/20 relative group">
               <div className="absolute top-8 left-8 z-10 flex items-center gap-4">
                  <div className="size-2 bg-primary animate-pulse" />
                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Projection Matrix</span>
@@ -176,10 +204,7 @@ export default function MonteCarloPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={results}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                    <XAxis 
-                      dataKey="trade" 
-                      hide
-                    />
+                    <XAxis dataKey="trade" hide />
                     <YAxis 
                       domain={['auto', 'auto']}
                       stroke="#ffffff20"
@@ -196,10 +221,10 @@ export default function MonteCarloPage() {
                         key={i}
                         type="monotone" 
                         dataKey={`trial_${i}`} 
-                        stroke="#ffffff" 
+                        stroke={i % 2 === 0 ? "#ffffff" : "var(--primary)"} 
                         strokeWidth={1} 
                         dot={false}
-                        opacity={0.15}
+                        opacity={i % 2 === 0 ? 0.05 : 0.15}
                         isAnimationActive={false}
                       />
                     ))}
@@ -212,6 +237,24 @@ export default function MonteCarloPage() {
                 </div>
               )}
            </HudCard>
+
+           {/* Stats Summary Grid */}
+           {stats && (
+             <div className="grid grid-cols-3 gap-8">
+                <div className="p-6 border border-white/5 bg-white/[0.02] space-y-2">
+                   <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Median Final</div>
+                   <div className="text-3xl font-black tracking-tighter text-primary">${stats.median.toLocaleString()}</div>
+                </div>
+                <div className="p-6 border border-white/5 bg-white/[0.02] space-y-2">
+                   <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Prob of Ruin</div>
+                   <div className={cn("text-3xl font-black tracking-tighter", stats.ruin > 0 ? "text-destructive" : "text-primary")}>{stats.ruin.toFixed(1)}%</div>
+                </div>
+                <div className="p-6 border border-white/5 bg-white/[0.02] space-y-2">
+                   <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Avg Max DD</div>
+                   <div className="text-3xl font-black tracking-tighter">{stats.maxDD.toFixed(1)}%</div>
+                </div>
+             </div>
+           )}
         </motion.div>
       </div>
 

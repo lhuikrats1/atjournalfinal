@@ -77,8 +77,8 @@ export default function LoginPage() {
       setTimeout(() => setStatus("AWAITING"), 2000);
     } else {
       setStatus("GRANTED");
-      // Splash screen is handled in Dashboard layout via Providers
-      setTimeout(() => router.push("/dashboard"), 1000);
+      // Give enough time for the epic animation
+      setTimeout(() => router.push("/dashboard"), 3000);
     }
   };
 
@@ -124,39 +124,54 @@ export default function LoginPage() {
             status === "DENIED" && "border-destructive/50 shadow-[0_0_50px_rgba(255,51,51,0.05)]",
             status === "GRANTED" && "border-primary/50 shadow-[0_0_50px_rgba(255,255,255,0.05)]"
           )}>
-            {/* Epic Welcome Splash Overlay */}
+            {/* Epic Welcome Splash Overlay (Massive & Full-screen) */}
             <AnimatePresence>
               {status === "GRANTED" && (
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-[100] bg-primary flex flex-col items-center justify-center text-background p-12 space-y-8"
+                  className="fixed inset-0 z-[1000] bg-primary flex flex-col items-center justify-center text-background p-12 overflow-hidden"
                 >
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", damping: 15 }}
-                    className="flex flex-col items-center gap-6"
+                   {/* Background Decorative Text */}
+                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden whitespace-nowrap opacity-[0.03]">
+                      <div className="text-[40vw] font-black uppercase leading-none select-none tracking-tighter">
+                         SYSTEM_ACCESS
+                      </div>
+                   </div>
+
+                   <motion.div
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex flex-col items-center gap-12 relative z-10"
                   >
-                     <div className="size-20 border-4 border-background flex items-center justify-center">
-                        <Sparkles size={40} className="animate-pulse" />
-                     </div>
-                     <div className="text-center space-y-2">
-                        <h2 className="text-4xl font-black uppercase tracking-tighter leading-none">WELCOME<br/>BACK</h2>
-                        <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-60 italic">Handshake_Verified</span>
+                     <div className="text-center space-y-4">
+                        <motion.h2 
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.4, duration: 1 }}
+                          className="text-[12vw] md:text-[180px] font-black uppercase tracking-tighter leading-[0.7]"
+                        >
+                           WELCOME<br/>
+                           <span className="opacity-40 italic">BACK</span>
+                        </motion.h2>
+                        <div className="flex flex-col items-center gap-4">
+                           <div className="h-[2px] w-[200px] bg-background/20 relative overflow-hidden">
+                              <motion.div 
+                                initial={{ x: "-100%" }}
+                                animate={{ x: "0%" }}
+                                transition={{ duration: 2, ease: "easeInOut" }}
+                                className="absolute inset-0 bg-background"
+                              />
+                           </div>
+                           <div className="space-y-1 text-center">
+                              <p className="text-[12px] font-black uppercase tracking-[0.8em] animate-pulse">Establishing Handshake...</p>
+                              <p className="text-[10px] font-mono opacity-40 uppercase tracking-widest">&gt; SYNCING_VAULT_RECORDS // NODE_01</p>
+                           </div>
+                        </div>
                      </div>
                   </motion.div>
-                  
-                  <div className="w-full max-w-[200px] h-1 bg-background/20 relative overflow-hidden">
-                    <motion.div 
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "0%" }}
-                      transition={{ duration: 1.2, ease: "easeInOut" }}
-                      className="absolute inset-0 bg-background"
-                    />
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.4em] animate-pulse">Syncing Vault...</span>
                 </motion.div>
               )}
             </AnimatePresence>
