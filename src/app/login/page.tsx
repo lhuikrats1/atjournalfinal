@@ -6,6 +6,24 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Lock, Mail, ChevronRight, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+  }
+};
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,18 +55,27 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-transparent p-6 relative font-sans">
-      {/* Background Decorative Lines (4 vertical lines) */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.08] dark:opacity-[0.1]">
-        <div className="absolute left-[20%] top-0 bottom-0 w-[1px] bg-foreground" />
-        <div className="absolute left-[40%] top-0 bottom-0 w-[1px] bg-foreground" />
-        <div className="absolute left-[60%] top-0 bottom-0 w-[1px] bg-foreground" />
-        <div className="absolute left-[80%] top-0 bottom-0 w-[1px] bg-foreground" />
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen flex items-center justify-center bg-[#050505] p-6 relative font-sans overflow-hidden"
+    >
+      {/* Premium Background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+        <div 
+          className="absolute inset-0 opacity-[0.03]" 
+          style={{ 
+            backgroundImage: `linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }} 
+        />
       </div>
 
       <div className="w-full max-w-md space-y-8 relative z-10">
-        <div className="text-center space-y-6">
-           <div className="inline-flex items-center gap-3 px-6 py-2 bg-primary/5 border border-primary/20">
+        <motion.div variants={itemVariants} className="text-center space-y-6">
+           <div className="inline-flex items-center gap-3 px-6 py-2 bg-primary/5 border border-primary/20 backdrop-blur-md">
               <Sparkles size={14} className="text-primary animate-pulse" />
               <span className="text-[11px] font-black tracking-[0.4em] uppercase opacity-80">AtJournal Entry</span>
            </div>
@@ -61,13 +88,14 @@ export default function LoginPage() {
                 Precision in every pivot.
              </p>
            </div>
-        </div>
+        </motion.div>
 
-        <HudCard className={cn(
-          "p-10 transition-all duration-700 border-primary/20 bg-background/80 backdrop-blur-sm",
-          status === "DENIED" && "border-destructive/50 shadow-[20px_20px_0px_rgba(255,51,51,0.05)]",
-          status === "GRANTED" && "border-primary/50 shadow-[20px_20px_0px_rgba(255,255,255,0.05)]"
-        )}>
+        <motion.div variants={itemVariants}>
+          <HudCard className={cn(
+            "p-10 transition-all duration-700 border-primary/20 bg-black/40 backdrop-blur-xl",
+            status === "DENIED" && "border-destructive/50 shadow-[0_0_50px_rgba(255,51,51,0.05)]",
+            status === "GRANTED" && "border-primary/50 shadow-[0_0_50px_rgba(255,255,255,0.05)]"
+          )}>
           <form onSubmit={handleLogin} className="space-y-8">
             <div className="space-y-5">
               <div className="space-y-2">
@@ -126,9 +154,9 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-        </HudCard>
+        </motion.div>
 
-        <div className="text-center pt-8 border-t border-primary/10 flex flex-col items-center gap-4">
+        <motion.div variants={itemVariants} className="text-center pt-8 border-t border-primary/10 flex flex-col items-center gap-4">
            <button 
              onClick={() => router.push("/register")}
              className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity"
@@ -138,8 +166,8 @@ export default function LoginPage() {
            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.8em] opacity-20">
               ATJOURNAL_CORE_4.2.1 // LUNAR_SYSTEM
            </span>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

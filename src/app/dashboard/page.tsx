@@ -6,6 +6,24 @@ import { DashboardCharts } from "./dashboard-charts";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import * as motion from "framer-motion/client";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+};
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -38,9 +56,18 @@ export default async function DashboardPage() {
   const dailyPnl = computeDailyPnl(trades);
 
   return (
-    <div className="min-h-full flex flex-col bg-transparent text-foreground font-sans selection:bg-primary/40">
+  return (
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-full flex flex-col bg-transparent text-foreground font-sans selection:bg-primary/40 overflow-x-hidden"
+    >
       {/* Top Protocol Bar */}
-      <div className="border-b border-primary/20 p-4 flex items-center justify-between bg-background/80 backdrop-blur-sm sticky top-0 z-40">
+      <motion.div 
+        variants={itemVariants}
+        className="border-b border-primary/20 p-4 flex items-center justify-between bg-background/80 backdrop-blur-sm sticky top-0 z-40"
+      >
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-3 pr-8 border-r border-primary/20">
              <Moon size={16} className="text-primary fill-primary animate-pulse" />
@@ -60,11 +87,11 @@ export default async function DashboardPage() {
               Encrypted Vault
            </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex-1 p-8 space-y-12">
         {/* Brutalist Header */}
-        <div className="flex items-end justify-between border-b border-primary/20 pb-8">
+        <motion.div variants={itemVariants} className="flex items-end justify-between border-b border-primary/20 pb-8">
           <div className="space-y-2">
             <h1 className="text-7xl font-black tracking-tighter uppercase leading-[0.8]">
               PERFORMANCE<br/>
@@ -82,12 +109,12 @@ export default async function DashboardPage() {
               New Command
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* High Density Brutalist Grid */}
         <div className="grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-8 space-y-8">
-            <div className="border border-primary bg-card p-8">
+          <motion.div variants={itemVariants} className="lg:col-span-8 space-y-8">
+            <div className="border border-primary bg-card p-8 group hover:shadow-[0_0_50px_rgba(255,255,255,0.03)] transition-shadow">
                <div className="flex items-center justify-between border-b border-primary/20 pb-6 mb-8">
                   <span className="text-[12px] font-black tracking-[0.2em] uppercase flex items-center gap-3">
                     <Activity size={18} strokeWidth={3} />
@@ -120,9 +147,10 @@ export default async function DashboardPage() {
                   <div className="text-[9px] font-black uppercase opacity-40">RISK_ADJ_EFF</div>
                </div>
             </div>
-          </div>
+            </div>
+          </motion.div>
 
-          <div className="lg:col-span-4 space-y-8">
+          <motion.div variants={itemVariants} className="lg:col-span-4 space-y-8">
             <div className="border border-primary bg-primary/5 p-8 h-full space-y-12">
                <div className="space-y-6">
                   <span className="text-[12px] font-black tracking-[0.3em] uppercase opacity-40">Lunar Intelligence</span>
@@ -192,10 +220,11 @@ export default async function DashboardPage() {
                   </div>
                </div>
             </div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 // Trigger build

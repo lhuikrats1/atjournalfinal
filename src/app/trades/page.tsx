@@ -5,6 +5,24 @@ export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
+import * as motion from "framer-motion/client";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+};
 
 export default async function TradesPage() {
   const supabase = await createClient();
@@ -31,9 +49,17 @@ export default async function TradesPage() {
   }));
 
   return (
-    <div className="min-h-full flex flex-col bg-transparent font-sans selection:bg-primary/40">
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-full flex flex-col bg-transparent font-sans selection:bg-primary/40 overflow-x-hidden"
+    >
       {/* Top Protocol Bar */}
-      <div className="border-b border-primary/20 p-4 flex items-center justify-between bg-background/80 backdrop-blur-sm sticky top-0 z-40">
+      <motion.div 
+        variants={itemVariants}
+        className="border-b border-primary/20 p-4 flex items-center justify-between bg-background/80 backdrop-blur-sm sticky top-0 z-40"
+      >
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-3 pr-8 border-r border-primary/20">
              <Archive size={16} className="text-primary" />
@@ -53,15 +79,11 @@ export default async function TradesPage() {
             <Download size={14} strokeWidth={3} />
             Csv Export
           </button>
-          <button className="flex items-center gap-2 px-6 py-2 bg-primary text-background text-[11px] font-black uppercase tracking-widest hover:opacity-90 transition-all ml-4">
-            <Plus size={14} strokeWidth={3} />
-            New Trade
-          </button>
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex-1 p-8 space-y-12 bg-card">
-        <div className="flex items-end justify-between border-b border-primary/20 pb-8">
+        <motion.div variants={itemVariants} className="flex items-end justify-between border-b border-primary/20 pb-8">
            <div className="space-y-2">
              <h1 className="text-7xl font-black tracking-tighter uppercase leading-[0.8]">
                Execution<br/>
@@ -94,15 +116,15 @@ export default async function TradesPage() {
            ))}
         </div>
 
-        <div className="border border-primary bg-background shadow-[20px_20px_0px_rgba(0,0,0,0.05)] dark:shadow-[20px_20px_0px_rgba(255,255,255,0.01)]">
+        <motion.div variants={itemVariants} className="border border-primary bg-background shadow-[20px_20px_0px_rgba(0,0,0,0.05)] dark:shadow-[20px_20px_0px_rgba(255,255,255,0.01)]">
           <TradeTable trades={typedTrades} />
-        </div>
+        </motion.div>
       </div>
 
-      <div className="mt-auto border-t border-primary/20 p-6 flex justify-between text-[10px] font-black text-primary/30 uppercase tracking-[0.5em]">
+      <motion.div variants={itemVariants} className="mt-auto border-t border-primary/20 p-6 flex justify-between text-[10px] font-black text-primary/30 uppercase tracking-[0.5em]">
         <span>ATJOURNAL_ARCHIVE_CORE_4.2.1</span>
         <span>{new Date().getFullYear()} // LUNAR_SYSTEM</span>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

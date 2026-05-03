@@ -8,13 +8,15 @@ import { KeyboardManager } from "@/components/providers/keyboard-manager";
 import { Sidebar } from "@/components/layout/sidebar";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { PageTransition } from "./page-transition";
+import { AnimatePresence } from "framer-motion";
 
 function ProvidersContent({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(false);
   const { showLines } = useSettings();
   const pathname = usePathname();
 
-  const isLoginPage = pathname === "/login";
+  const isAuthPage = pathname === "/login" || pathname === "/register" || pathname === "/about";
 
   useEffect(() => {
     const hasSeenSplash = sessionStorage.getItem("seen_splash");
@@ -33,16 +35,22 @@ function ProvidersContent({ children }: { children: React.ReactNode }) {
 
 
 
-      {isLoginPage ? (
-        <>{children}</>
-      ) : (
-        <div className="flex w-full min-h-screen relative z-10 overflow-x-hidden">
-          <Sidebar />
-          <main className="flex-1 bg-transparent relative min-h-screen overflow-x-hidden">
+      <AnimatePresence mode="wait">
+        {isAuthPage ? (
+          <PageTransition>
             {children}
-          </main>
-        </div>
-      )}
+          </PageTransition>
+        ) : (
+          <div className="flex w-full min-h-screen relative z-10 overflow-x-hidden">
+            <Sidebar />
+            <main className="flex-1 bg-transparent relative min-h-screen overflow-x-hidden">
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+          </div>
+        )}
+      </AnimatePresence>
 
     </>
   );
