@@ -40,6 +40,33 @@ const GlobalStyles = () => (
       0% { transform: translateY(-100%); }
       100% { transform: translateY(500%); }
     }
+
+    /* Institutional HUD Sliders */
+    .hud-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      outline: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    .hud-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border: 4px solid #000;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hud-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 15px var(--primary);
+    }
   `}</style>
 );
 
@@ -345,6 +372,40 @@ export default function AboutPage() {
                 <div className="text-[24px] font-black tracking-tighter">6 Regions</div>
                 <div className="text-[9px] font-black uppercase tracking-widest opacity-40">Deployment Footprint</div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Protocol Insights (Advanced Content) */}
+        <section className="space-y-12">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4"
+          >
+             <div className="h-[2px] w-12 bg-primary" />
+             <h2 className="text-[12px] font-black uppercase tracking-[0.6em] opacity-40">Protocol Insights</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+               <div className="text-primary font-black text-[10px] tracking-[0.2em]">INSIGHT_01</div>
+               <p className="text-[13px] font-medium leading-relaxed opacity-60 uppercase italic">
+                  Statistically, 90% of traders fail not because of strategy, but due to temporal emotional variance. AtJournal eliminates the variance.
+               </p>
+            </div>
+            <div className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+               <div className="text-primary font-black text-[10px] tracking-[0.2em]">INSIGHT_02</div>
+               <p className="text-[13px] font-medium leading-relaxed opacity-60 uppercase italic">
+                  Institutional edges are built on 0.1ms latency advantages. Your edge is built on the precision of your Execution Archive.
+               </p>
+            </div>
+            <div className="p-8 border border-white/5 bg-white/[0.01] space-y-4">
+               <div className="text-primary font-black text-[10px] tracking-[0.2em]">INSIGHT_03</div>
+               <p className="text-[13px] font-medium leading-relaxed opacity-60 uppercase italic">
+                  A Monte Carlo simulation of 1000 trials reveals the true mathematical ruin of a strategy. Guesswork is for the retail mass.
+               </p>
             </div>
           </div>
         </section>

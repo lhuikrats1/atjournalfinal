@@ -127,6 +127,19 @@ export function Sidebar() {
             {!isCollapsed && <span>End Session</span>}
           </button>
         </div>
+
+        {/* Stable Handshake Indicator */}
+        {!isCollapsed && (
+          <div className="mt-4 px-3 py-4 bg-primary/5 border border-primary/10 group cursor-default">
+             <div className="flex items-center gap-3">
+                <div className="size-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
+                <div className="flex flex-col">
+                   <span className="text-[9px] font-black uppercase tracking-widest text-primary">Handshake_Stable</span>
+                   <span className="text-[7px] font-mono opacity-30 uppercase tracking-tighter">Node: GLOBAL_S_01</span>
+                </div>
+             </div>
+          </div>
+        )}
       </div>
     </div>
   );

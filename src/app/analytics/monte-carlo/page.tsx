@@ -162,7 +162,7 @@ export default function MonteCarloPage() {
                     <input 
                       type="range" min="0.1" max="10" step="0.1" value={riskPerTrade} 
                       onChange={(e) => setRiskPerTrade(Number(e.target.value))}
-                      className="w-full accent-primary h-1 bg-white/10 rounded-none appearance-none"
+                      className="hud-slider"
                     />
                  </div>
 
@@ -173,7 +173,7 @@ export default function MonteCarloPage() {
                          type="number" 
                          value={initialBalance}
                          onChange={(e) => setInitialBalance(Number(e.target.value))}
-                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none"
+                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none focus:bg-primary/5 transition-all"
                        />
                     </div>
                     <div className="space-y-2">
@@ -183,7 +183,7 @@ export default function MonteCarloPage() {
                          min="1" max="100"
                          value={trials}
                          onChange={(e) => setTrials(Number(e.target.value))}
-                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none"
+                         className="w-full bg-white/5 border border-white/10 p-4 text-sm font-black focus:border-primary/40 focus:outline-none focus:bg-primary/5 transition-all"
                        />
                     </div>
                  </div>
