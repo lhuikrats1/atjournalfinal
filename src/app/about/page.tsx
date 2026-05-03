@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe, HelpCircle, Crown } from "lucide-react";
+import { Zap, Shield, Sparkles, Activity, Target, BrainCircuit, ChevronRight, ArrowRight, Database, Globe, HelpCircle, Crown, Lock } from "lucide-react";
 import { HudCard } from "@/components/ui/hud-card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -55,15 +55,30 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#050505] text-foreground font-sans overflow-x-hidden selection:bg-primary selection:text-background">
       {/* Background Grid & Glows */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[150px] animate-pulse [animation-delay:3s]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[150px] animate-pulse [animation-delay:2s]" />
+        
+        {/* Digital Grid Overlay */}
         <div 
-          className="absolute inset-0 opacity-[0.02]" 
+          className="absolute inset-0 opacity-[0.03]" 
           style={{ 
             backgroundImage: `linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)`,
-            backgroundSize: '80px 80px'
+            backgroundSize: '60px 60px'
           }} 
         />
+      </div>
+
+      {/* Floating Login Button (Top Right) */}
+      <div className="fixed top-8 right-8 z-[100]">
+        <Link href="/login" className="group flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 backdrop-blur-xl hover:border-primary transition-all">
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">Access Terminal</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">Establish_Session</span>
+          </div>
+          <div className="size-10 bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-background transition-all">
+            <Lock size={16} />
+          </div>
+        </Link>
       </div>
 
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-24 lg:py-32 space-y-32">
@@ -75,15 +90,20 @@ export default function AboutPage() {
           variants={containerVariants}
           className="space-y-12"
         >
-          <motion.div variants={itemVariants} className="space-y-6">
+          <motion.div variants={itemVariants} className="space-y-12">
             <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/5 border border-white/10 backdrop-blur-md">
               <span className="w-2 h-2 bg-primary rounded-full animate-ping" />
-              <span className="text-[10px] font-black tracking-[0.5em] uppercase opacity-60">System Manifesto</span>
+              <span className="text-[10px] font-black tracking-[0.5em] uppercase opacity-60">System Manifesto // AtJournal_v.4</span>
             </div>
-            <h1 className="text-8xl lg:text-[10rem] font-black tracking-[calc(-0.04em)] leading-[0.85] uppercase">
-              REDEFINING<br/>
-              <span className="text-primary/20 italic">EXECUTION</span>
-            </h1>
+            <div className="space-y-4">
+              <h1 className="text-8xl lg:text-[9rem] font-black tracking-[calc(-0.06em)] leading-[0.8] uppercase">
+                YOUR EDGE<br/>
+                <span className="text-primary/20 italic">STARTS TODAY</span>
+              </h1>
+              <p className="text-[14px] font-black uppercase tracking-[0.8em] opacity-30 italic pt-6">
+                &gt; INITIALIZING_PROFESSIONAL_TRADING_VAULT
+              </p>
+            </div>
           </motion.div>
 
           <motion.div variants={itemVariants} className="max-w-2xl border-l-2 border-primary/20 pl-8 space-y-8">
