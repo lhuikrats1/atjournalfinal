@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { Search, TrendingUp, Target, Zap, BarChart2, Activity, Moon, Shield } from "lucide-react";
 import { computeCoreStats, computeDailyPnl, computeDirectionalStats, type RawTrade } from "@/lib/analytics";
 import { DashboardCharts } from "./dashboard-charts";
