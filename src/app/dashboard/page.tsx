@@ -4,7 +4,6 @@ import { Search, TrendingUp, Target, Zap, BarChart2, Activity, Moon, Shield } fr
 import { computeCoreStats, computeDailyPnl, computeDirectionalStats, type RawTrade } from "@/lib/analytics";
 import { DashboardCharts } from "./dashboard-charts";
 import { cn } from "@/lib/utils";
-export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
