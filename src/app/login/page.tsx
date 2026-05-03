@@ -128,7 +128,13 @@ export default function LoginPage() {
           </form>
         </HudCard>
 
-        <div className="text-center pt-8 border-t border-primary/10">
+        <div className="text-center pt-8 border-t border-primary/10 flex flex-col items-center gap-4">
+           <button 
+             onClick={() => router.push("/register")}
+             className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity"
+           >
+              New Protocol? Create Account
+           </button>
            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.8em] opacity-20">
               ATJOURNAL_CORE_4.2.1 // LUNAR_SYSTEM
            </span>
