@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
+import { atjournal_db as prisma } from "../../../../../lib/prisma";
 import Papa from "papaparse";
 
 export async function POST(req: Request) {
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
 
     const created = await prisma.trade.createMany({
       data: tradesToCreate,
-      skipDuplicates: true, // Requires externalId for this to work well, but we can rely on manual checks
+      skipDuplicates: true, 
     });
 
     return NextResponse.json({ 

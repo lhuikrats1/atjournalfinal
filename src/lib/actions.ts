@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { atjournal_db as prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function createTrade(formData: any) {

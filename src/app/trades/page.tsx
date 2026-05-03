@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { atjournal_db as prisma } from "@/lib/prisma";
 import { Search, Filter, Download, Plus, Database, Archive, Upload } from "lucide-react";
 import { TradeTable } from "@/components/trades/trade-table";
 import { ImportVault } from "@/components/trades/import-vault";

@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import { prisma } from "@/lib/prisma";
+import { atjournal_db as prisma } from "@/lib/prisma";
 import { Lightbulb, Activity, Brain, Shield, Moon } from "lucide-react";
 import { generateCoachingTips, computeCoreStats, computeDirectionalStats, type RawTrade } from "@/lib/analytics";
 import { createClient } from "@/lib/supabase/server";

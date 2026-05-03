@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import { prisma } from "@/lib/prisma";
+import { atjournal_db as prisma } from "@/lib/prisma";
 import {
   computeCoreStats,
   computeDirectionalStats,
