@@ -1,11 +1,26 @@
-"use client";
+---
+title: Monte Carlo Simulation
+type: page
+tags: [website, analytics, monte-carlo]
+---
+
+
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Dice5, Activity, Target, Shield, ArrowRight, RefreshCcw, Info } from "lucide-react";
 import { HudCard } from "@/components/ui/hud-card";
 import { cn } from "@/lib/utils";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import dynamic from "next/dynamic";
+
+// Lazy‑load Recharts components (client‑only)
+const LineChart = dynamic(() => import("recharts").then(mod => mod.LineChart), { ssr: false });
+const Line = dynamic(() => import("recharts").then(mod => mod.Line), { ssr: false });
+const XAxis = dynamic(() => import("recharts").then(mod => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import("recharts").then(mod => mod.YAxis), { ssr: false });
+const CartesianGrid = dynamic(() => import("recharts").then(mod => mod.CartesianGrid), { ssr: false });
+const Tooltip = dynamic(() => import("recharts").then(mod => mod.Tooltip), { ssr: false });
+const ResponsiveContainer = dynamic(() => import("recharts").then(mod => mod.ResponsiveContainer), { ssr: false });
 
 interface SimulationResult {
   equity: number;
@@ -103,7 +118,7 @@ export default function MonteCarloPage() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.6 }
     }
   };
 

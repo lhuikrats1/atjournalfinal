@@ -21,22 +21,38 @@ const itemVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    transition: { duration: 0.6 }
   }
 };
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  // Initialize Supabase client safely – if env vars are missing or the request fails, fallback to a login redirect.
+  let user = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (e) {
+    console.error('Supabase initialization error:', e);
+  }
 
   if (!user) {
+    // If we can't determine the user, send them to login rather than hanging.
     redirect("/login");
   }
 
-  const rawTrades = await prisma.trade.findMany({
-    where: { userId: user.id },
-    orderBy: { entryTime: "asc" },
-  });
+  // Fetch trades with defensive error handling to avoid hanging on DB issues.
+  let rawTrades: any[] = [];
+  try {
+    rawTrades = await prisma.trade.findMany({
+      where: { userId: user.id },
+      orderBy: { entryTime: "asc" },
+    });
+  } catch (e) {
+    console.error('Prisma fetch error:', e);
+    // Continue with empty trade list to render the page.
+    rawTrades = [];
+  }
 
 
   const trades: RawTrade[] = rawTrades.map(t => ({
@@ -46,7 +62,7 @@ export default async function DashboardPage() {
     grossPnl: Number(t.grossPnl),
     commission: Number(t.commission),
     netPnl: Number(t.netPnl),
-    tags: t.tags || "[]",
+    tags: JSON.stringify(t.tags ?? []),
     entryTime: new Date(t.entryTime),
     exitTime: t.exitTime ? new Date(t.exitTime) : null,
   }));

@@ -1,4 +1,10 @@
-export const dynamic = "force-dynamic";
+---
+title: Coaching
+type: page
+tags: [website, coaching]
+---
+
+
 import { atjournal_db as prisma } from "@/lib/prisma";
 import { Lightbulb, Activity, Brain, Shield, Moon } from "lucide-react";
 import { generateCoachingTips, computeCoreStats, computeDirectionalStats, type RawTrade } from "@/lib/analytics";
@@ -26,7 +32,7 @@ export default async function CoachingPage() {
     grossPnl: Number(t.grossPnl),
     commission: Number(t.commission),
     netPnl: Number(t.netPnl),
-    tags: t.tags || "[]",
+    tags: JSON.stringify(t.tags ?? []),
     entryTime: new Date(t.entryTime),
     exitTime: t.exitTime ? new Date(t.exitTime) : null,
   }));

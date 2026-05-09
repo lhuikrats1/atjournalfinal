@@ -7,6 +7,20 @@ export async function POST(req: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    // Ensure a corresponding Prisma User exists
+    let prismaUserId = "";
+    if (user?.email) {
+      const dbUser = await prisma.user.upsert({
+        where: { email: user.email },
+        update: {},
+        create: { id: user.id, email: user.email, name: user.email?.split('@')[0] },
+      });
+      prismaUserId = dbUser.id;
+    } else {
+      // Fallback: use Supabase uid as a placeholder user (may not match schema)
+      prismaUserId = user?.id ?? "";
+    }
+
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -50,7 +64,7 @@ export async function POST(req: Request) {
         const entryTime = new Date(exitTime.getTime() - 60000); 
 
         tradesToCreate.push({
-          userId: user.id,
+          userId: prismaUserId,
           instrument,
           direction,
           entryPrice,
@@ -71,10 +85,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No valid trades found in CSV" }, { status: 400 });
     }
 
-    const created = await prisma.trade.createMany({
-      data: tradesToCreate,
-      skipDuplicates: true, 
-    });
+    console.log('Parsed', tradesToCreate.length, 'trades to create');
+      const created = await prisma.trade.createMany({
+        data: tradesToCreate,
+        skipDuplicates: true,
+      });
 
     return NextResponse.json({ 
       success: true, 

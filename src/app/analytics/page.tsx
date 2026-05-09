@@ -1,4 +1,10 @@
-export const dynamic = "force-dynamic";
+---
+title: Analytics
+type: page
+tags: [website, analytics]
+---
+
+
 import { atjournal_db as prisma } from "@/lib/prisma";
 import {
   computeCoreStats,
@@ -32,7 +38,7 @@ export default async function AnalyticsPage() {
     grossPnl: Number(t.grossPnl),
     commission: Number(t.commission),
     netPnl: Number(t.netPnl),
-    tags: t.tags || "[]",
+    tags: JSON.stringify(t.tags ?? []),
     entryTime: new Date(t.entryTime),
     exitTime: t.exitTime ? new Date(t.exitTime) : null,
   }));
